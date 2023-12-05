@@ -527,8 +527,8 @@ local on_attach = function(_, bufnr)
   nmap('<leader>tws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
-  nmap('<C-q>', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-Q>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  nmap('<leader>hq', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<leader>hQ', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]ecQlaration')
@@ -582,14 +582,6 @@ local servers = {
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-      -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-      -- diagnostics = { disable = { 'missing-fields' } },
-    },
-  },
 }
 
 -- Setup neovim lua configuration
@@ -605,6 +597,16 @@ local mason_lspconfig = require 'mason-lspconfig'
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
+
+local lspconfig = require('lspconfig')
+lspconfig.lua_ls.setup({
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+      -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+      -- diagnostics = { disable = { 'missing-fields' } },
+    },
+})
 
 mason_lspconfig.setup_handlers {
   function(server_name)
